@@ -38,7 +38,12 @@ jobs:
         env:
           CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}
           CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: cdk deploy --require-approval never
+        run: |
+          # Fall back to resolving account from STS if secret is not set
+          if [ -z "$CDK_DEFAULT_ACCOUNT" ]; then
+            export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
+          fi
+          cdk deploy --require-approval never
 
       - name: Login to ECR
         id: ecr-login
