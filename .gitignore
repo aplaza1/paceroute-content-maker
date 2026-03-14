@@ -1,0 +1,25 @@
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Database
+*.db
+
+# Output files
+output/images/
+output/articles/
+
+# Logs
+logs/*.log
+
+# CDK
+infra/cdk.out/
+infra/.venv/
+.DS_Store
