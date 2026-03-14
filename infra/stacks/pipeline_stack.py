@@ -70,14 +70,14 @@ class PipelineStack(Stack):
         fargate_sg = ec2.SecurityGroup(
             self, "FargateSg",
             vpc=vpc,
-            description="Fargate task outbound only",
+            description="Fargate task - outbound only",
             allow_all_outbound=True,
         )
 
         efs_sg = ec2.SecurityGroup(
             self, "EfsSg",
             vpc=vpc,
-            description="EFS — allow NFS from Fargate",
+            description="EFS - allow NFS from Fargate",
             allow_all_outbound=False,
         )
         efs_sg.add_ingress_rule(
