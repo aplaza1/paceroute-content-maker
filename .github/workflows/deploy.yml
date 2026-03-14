@@ -22,6 +22,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Set up Python for CDK
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install CDK dependencies
+        run: pip install -r infra/requirements.txt
+
+      - name: Install AWS CDK CLI
+        run: npm install -g aws-cdk
+
+      - name: CDK deploy (creates ECR repo and all infrastructure)
+        working-directory: infra
+        env:
+          CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}
+          CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        run: cdk deploy --require-approval never
+
       - name: Login to ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
@@ -36,21 +54,3 @@ jobs:
                       $ECR_REGISTRY/paceroute-pipeline:latest
           docker push $ECR_REGISTRY/paceroute-pipeline:$IMAGE_TAG
           docker push $ECR_REGISTRY/paceroute-pipeline:latest
-
-      - name: Set up Python for CDK
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install CDK dependencies
-        run: pip install -r infra/requirements.txt
-
-      - name: Install AWS CDK CLI
-        run: npm install -g aws-cdk
-
-      - name: CDK deploy
-        working-directory: infra
-        env:
-          CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}
-          CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-        run: cdk deploy --require-approval never
