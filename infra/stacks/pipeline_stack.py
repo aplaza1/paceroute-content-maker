@@ -144,7 +144,6 @@ class PipelineStack(Stack):
             self, "Cluster",
             cluster_name="paceroute-pipeline",
             vpc=vpc,
-            container_insights=True,
         )
 
         # ── Secrets references ────────────────────────────────────────────────
@@ -246,8 +245,8 @@ class PipelineStack(Stack):
         )
 
         # ── Outputs ───────────────────────────────────────────────────────────
-        cdk.CfnOutput(self, "EcrRepoUri",     value=repo.repository_uri)
-        cdk.CfnOutput(self, "EfsId",          value=filesystem.file_system_id)
-        cdk.CfnOutput(self, "ClusterName",    value=cluster.cluster_name)
-        cdk.CfnOutput(self, "TaskDefinition", value=task_def.task_definition_arn)
-        cdk.CfnOutput(self, "LogGroup",       value=log_group.log_group_name)
+        cdk.CfnOutput(self, "OutEcrRepoUri",     value=repo.repository_uri)
+        cdk.CfnOutput(self, "OutEfsId",          value=filesystem.file_system_id)
+        cdk.CfnOutput(self, "OutClusterName",    value=cluster.cluster_name)
+        cdk.CfnOutput(self, "OutTaskDefinition", value=task_def.task_definition_arn)
+        cdk.CfnOutput(self, "OutLogGroup",       value=log_group.log_group_name)
